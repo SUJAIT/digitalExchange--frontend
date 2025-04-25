@@ -41,8 +41,10 @@ const Login = () => {
               email,
               password,
             });
-      setAccessToken(res.data.accessToken);
-      
+            console.log(res)
+      setAccessToken(res.data.data.accessToken);
+      console.log("AccessToken",res.data.data.accessToken);
+
             navigate('/'); // Redirect after login
           } catch (err: any) {
             setError(err.response?.data?.message || 'Login failed');

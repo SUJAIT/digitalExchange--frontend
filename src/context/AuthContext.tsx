@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 type AuthContextType = {
   accessToken: string | null;
@@ -7,27 +7,42 @@ type AuthContextType = {
   isAuthenticated: boolean;
 };
 
+//create the context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [accessToken, setAccessToken] = useState<string | null>(() => {
-    return localStorage.getItem('accessToken');
-  });
+//provide the component
+export const AuthProvider = ({ children } : { children : ReactNode}) => {
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+
+  //load the token from localStorage on first render
+  useEffect(() => {
+    const storedToken = localStorage.getItem("accessToken");
+    if (storedToken) {
+      setAccessToken(storedToken);
+    }
+  },[]);
 
   const handleSetToken = (token: string | null) => {
     setAccessToken(token);
-    if (token) localStorage.setItem('accessToken', JSON.stringify(token));
-    else localStorage.removeItem('accessToken');
-  };
+    if (token) {
+      localStorage.setItem("accessToken", token);
+    } else {
+      localStorage.removeItem("accessToken");
+    }
+  }
 
-  const isAuthenticated = !!accessToken;
 
-  return (
-    <AuthContext.Provider value={{ accessToken, setAccessToken: handleSetToken, isAuthenticated }}>
-      {children}
-    </AuthContext.Provider>
-  );
+const isAuthenticated = !!accessToken;
+
+return (
+  <AuthContext.Provider
+    value={{ accessToken, setAccessToken: handleSetToken, isAuthenticated }}
+  >
+    {children}
+  </AuthContext.Provider>
+);
 };
+
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
