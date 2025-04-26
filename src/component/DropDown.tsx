@@ -8,13 +8,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Link } from "react-router-dom"
+import { DropDownItem } from "./Interface.components";
 
-interface DropDownItem {
-  label: string;
-  to?: string;
-  onClick?: () => void;
-  className?: string;
-}
+
 
 const DropDown = ({
   trigger,

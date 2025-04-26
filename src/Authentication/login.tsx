@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
-   const { setAccessToken} = useAuth();
+   const { setAccessToken } = useAuth();
    const navigate = useNavigate();
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
@@ -41,9 +41,17 @@ const Login = () => {
               email,
               password,
             });
-            console.log(res)
-      setAccessToken(res.data.data.accessToken);
-      console.log("AccessToken",res.data.data.accessToken);
+
+        
+            console.log("AccessToken", res.data.data.accessToken);
+
+            const userData = await setAccessToken(res.data.data.accessToken);
+
+            console.log("User👉", userData);
+            console.log("User Role👉", userData?.role);
+
+
+    
 
             navigate('/'); // Redirect after login
           } catch (err: any) {

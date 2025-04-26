@@ -8,12 +8,15 @@ const Navbar = () => {
   const handleLogOut = () => setAccessToken(null)
 
   const menuItems = isAuthenticated
-    ? [
+    ? [  {
+          label: "Profile",
+          to: "/user",
+        },
         {
           label: "Logout",
           onClick: handleLogOut,
           className: "text-red-600",
-        },
+        }
       ]
     : [
         {
